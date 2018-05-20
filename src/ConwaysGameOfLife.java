@@ -44,12 +44,18 @@ public class ConwaysGameOfLife extends JPanel implements ActionListener{
 	private WorldPanel gamePanel;
 	
 	public static void main(String[] args) {
-		new ConwaysGameOfLife().launchGame();
+		ConwaysGameOfLife a = new	 ConwaysGameOfLife();
+		a.launchGame();
 	}
 	
 	public void launchGame() {
 		//build the window and start the simulation
-		
+		window.add(inputPanel);
+		inputPanel.add(startStopButton);
+		inputPanel.add(randomizeButton);
+		inputPanel.add(clearButton);
+		inputPanel.add(speedLabel);
+		inputPanel.add(speedField);
 	}
 	
 	@Override
@@ -65,4 +71,4 @@ public class ConwaysGameOfLife extends JPanel implements ActionListener{
 			//call clearCells
 	}
 	}
-}
+
