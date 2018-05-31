@@ -61,9 +61,12 @@ public class ConwaysGameOfLife extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//if startStopButton is pressed, 
-			// toggle isRunning to the opposite of its current state
+		if(e.getSource().equals(startStopButton)) {
+        
+		}
+		// toggle isRunning to the opposite of its current state
 			// start or stop the animation based on the state of isRunning
-		
+
 		// if ranomizeButton is pressed
 			// call randomizeCells
 		

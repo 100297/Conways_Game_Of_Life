@@ -11,9 +11,9 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class WorldPanel extends JPanel implements MouseListener, ActionListener {
-	private int cellsPerRow;
+	 int cellsPerRow;
 	private int cellSize;
-	private Cell[][] cells;
+	private Cell[] cells;
 	private Timer timer;
 	
 	public WorldPanel(int w, int h, int cpr) {
@@ -22,23 +22,47 @@ public class WorldPanel extends JPanel implements MouseListener, ActionListener 
 		timer = new Timer(500, this);
 		this.cellsPerRow = cpr;
 	
-		//calculate the cellSize
+		cellSize = 1;
 	
 		
 		//initialize the cells array
-		
+		cells = new Cell[w*h];
 		
 		//initialize each cell in the array
-		
+		for (int i = 0; i < cpr; i++) {
+			for (int j = 0; j < cpr; j++) {
+				cells[i] = new Cell(i,j,cellSize);
+			}
+			
+		}
 	}
 	
 	public void randomizeCells() {
+		Random ran = new Random();
+		boolean s = ran.nextBoolean();
+		for (int i = 0; i < cells.length; i++) {
+			if(s) {
+				cells[i].isAlive = true;
+				
+			} else {
+				cells[i].isAlive = false;
+			}
+		}
+		
 		// make each cell alive or dead randomly
 		repaint();
 	}
 	
 	public void clearCells() {
 		// set isAlive to false for all cells
+		for (int i = 0; i < cells.length; i++) {
+			
+				
+				
+			
+				cells[i].isAlive = false;
+			
+		}
 		repaint();
 	}
 	
@@ -56,6 +80,11 @@ public class WorldPanel extends JPanel implements MouseListener, ActionListener 
 	
 	@Override
 	public void paintComponent(Graphics g) {
+		for (int i = 0; i < cells.length; i++) {
+					
+			cells[i].draw(g);
+		
+	}
 		//iterate through the cells and draw them
 	}
 	
@@ -63,9 +92,12 @@ public class WorldPanel extends JPanel implements MouseListener, ActionListener 
 	public void step() {
 		//initialize the numLivingNbors variable to be the same size as the cells
 		int[][] numLivingNbors;
+		numLivingNbors = new int[cellSize][cellSize];
 		
 		//iterate through the cells and populate the numLivingNbors array with their neighbors
-		
+		 for (int i = 0; i < cells.length; i++) {
+			numLivingNbors[i][i] = getLivingNeighbors();
+		}
 		
 		repaint();
 	}
