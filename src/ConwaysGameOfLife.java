@@ -50,19 +50,38 @@ public class ConwaysGameOfLife extends JPanel implements ActionListener{
 	
 	public void launchGame() {
 		//build the window and start the simulation
+		gamePanel = new WorldPanel(700,700,350);
+		window = new JFrame();
+		inputPanel = new JPanel();
+		startStopButton = new JButton();
+		randomizeButton = new JButton();
+		speedLabel = new JLabel();
+		clearButton = new JButton();
+		speedField = new JTextField();
 		window.add(inputPanel);
 		inputPanel.add(startStopButton);
 		inputPanel.add(randomizeButton);
 		inputPanel.add(clearButton);
 		inputPanel.add(speedLabel);
 		inputPanel.add(speedField);
+		window.setVisible(true);
+		window.pack();
+		inputPanel.add(gamePanel);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//if startStopButton is pressed, 
 		if(e.getSource().equals(startStopButton)) {
-        
+         if(isRunning) {
+        	 isRunning = false;
+         } else {
+        	 isRunning = true;
+         }
+		} else if(e.getSource().equals(randomizeButton)) {
+			gamePanel.randomizeCells();
+		} else if(e.getSource().equals(clearButton)) {
+			gamePanel.clearCells();
 		}
 		// toggle isRunning to the opposite of its current state
 			// start or stop the animation based on the state of isRunning
