@@ -50,37 +50,49 @@ public class ConwaysGameOfLife extends JPanel implements ActionListener{
 	
 	public void launchGame() {
 		//build the window and start the simulation
-		gamePanel = new WorldPanel(700,700,350);
+		
 		window = new JFrame();
 		inputPanel = new JPanel();
 		startStopButton = new JButton();
 		randomizeButton = new JButton();
+		startStopButton.setText("Start");
+		randomizeButton.setText("Randomize");
 		speedLabel = new JLabel();
 		clearButton = new JButton();
 		speedField = new JTextField();
 		window.add(inputPanel);
+		
 		inputPanel.add(startStopButton);
 		inputPanel.add(randomizeButton);
 		inputPanel.add(clearButton);
 		inputPanel.add(speedLabel);
 		inputPanel.add(speedField);
 		window.setVisible(true);
-		window.pack();
+		gamePanel = new WorldPanel(WIDTH,HEIGHT,CELLS_PER_ROW);
 		inputPanel.add(gamePanel);
+		window.pack();
+		window.setDefaultCloseOperation(3);
+		clearButton.addActionListener(this);
+		randomizeButton.addActionListener(this);
+		startStopButton.addActionListener(this);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//if startStopButton is pressed, 
-		if(e.getSource().equals(startStopButton)) {
-         if(isRunning) {
+		if(e.getSource() == startStopButton) {
+         System.out.println("Button Works");
+			if(isRunning) {
         	 isRunning = false;
+        	 gamePanel.startAnimation();
          } else {
         	 isRunning = true;
+        	 gamePanel.stopAnimation();
          }
-		} else if(e.getSource().equals(randomizeButton)) {
+		} else if(e.getSource() == randomizeButton) {
 			gamePanel.randomizeCells();
-		} else if(e.getSource().equals(clearButton)) {
+			System.out.println("asd");
+		} else if(e.getSource() == clearButton) {
 			gamePanel.clearCells();
 		}
 		// toggle isRunning to the opposite of its current state
@@ -91,6 +103,7 @@ public class ConwaysGameOfLife extends JPanel implements ActionListener{
 		
 		// if clearButton is pressed
 			//call clearCells
+		repaint();
 	}
 	}
 
