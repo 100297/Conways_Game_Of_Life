@@ -27,9 +27,10 @@ import javax.swing.JTextField;
  */
 
 public class ConwaysGameOfLife extends JPanel implements ActionListener{
+	public int cellDelay;
 	public static final int WIDTH = 700;
 	public static final int HEIGHT = 700;
-	public static final int CELLS_PER_ROW = 350;
+	public static final int CELLS_PER_ROW = 100;
 	
 	private boolean isRunning = false;
 	
@@ -39,7 +40,7 @@ public class ConwaysGameOfLife extends JPanel implements ActionListener{
 	private JButton randomizeButton;
 	private JButton clearButton;
 	private JLabel speedLabel;
-	private JTextField speedField;
+	public JTextField speedField;
 	
 	private WorldPanel gamePanel;
 	
@@ -59,7 +60,7 @@ public class ConwaysGameOfLife extends JPanel implements ActionListener{
 		randomizeButton.setText("Randomize");
 		speedLabel = new JLabel();
 		clearButton = new JButton();
-		speedField = new JTextField();
+		speedField = new JTextField(5);
 		window.add(inputPanel);
 		
 		inputPanel.add(startStopButton);
@@ -75,6 +76,8 @@ public class ConwaysGameOfLife extends JPanel implements ActionListener{
 		clearButton.addActionListener(this);
 		randomizeButton.addActionListener(this);
 		startStopButton.addActionListener(this);
+		speedField.setText("10");
+		clearButton.setText("Clear");
 	}
 	
 	@Override
@@ -82,11 +85,12 @@ public class ConwaysGameOfLife extends JPanel implements ActionListener{
 		//if startStopButton is pressed, 
 		if(e.getSource() == startStopButton) {
          System.out.println("Button Works");
-			if(isRunning) {
-        	 isRunning = false;
+         	gamePanel.setAnimationDelay(Integer.parseInt(speedField.getText()));
+         if(!isRunning) {
+        	 isRunning = true;
         	 gamePanel.startAnimation();
          } else {
-        	 isRunning = true;
+        	 isRunning = false;
         	 gamePanel.stopAnimation();
          }
 		} else if(e.getSource() == randomizeButton) {

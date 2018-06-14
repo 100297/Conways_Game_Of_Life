@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class WorldPanel extends JPanel implements MouseListener, ActionListener {
+	
 	int cellsPerRow;
 	private int cellSize;
 	private Cell[][] cells;
@@ -19,12 +20,15 @@ public class WorldPanel extends JPanel implements MouseListener, ActionListener 
 	public WorldPanel(int w, int h, int cpr) {
 
 		// initialize the cells array
-		cells = new Cell[w][h];
+		
+		this.cellsPerRow = cpr;
+		cells = new Cell[cellsPerRow][cellsPerRow];
 		cellSize = h / cpr;
+		System.out.println(cellSize);
 		// initialize each cell in the array
 		for (int i = 0; i < cells.length; i++) {
 			for (int j = 0; j < cells[i].length; j++) {
-				cells[i][j] = new Cell(i, j, cellSize);
+				cells[i][j] = new Cell(i*cellSize, j*cellSize, cellSize);
 			}
 
 		}
@@ -32,8 +36,7 @@ public class WorldPanel extends JPanel implements MouseListener, ActionListener 
 		setPreferredSize(new Dimension(w, h));
 		addMouseListener(this);
 		timer = new Timer(500, this);
-		this.cellsPerRow = cpr;
-
+		
 	}
 
 	public void randomizeCells() {
@@ -111,6 +114,7 @@ public class WorldPanel extends JPanel implements MouseListener, ActionListener 
 	// advances world one step
 	public void step() {
 		// initialize the numLivingNbors variable to be the same size as the cells
+		
 		int[][] numLivingNbors;
 		numLivingNbors = new int[cells.length][cells[0].length];
 
@@ -119,6 +123,13 @@ public class WorldPanel extends JPanel implements MouseListener, ActionListener 
 		for (int i = 0; i < cells.length; i++) {
 			for (int j = 0; j < cells[i].length; j++) {
 				numLivingNbors[i][j] = getLivingNeighbors(i, j);
+			}
+
+		}
+
+		for (int i = 0; i < cells.length; i++) {
+			for (int j = 0; j < cells[i].length; j++) {
+				cells[i][j].liveOrDie(numLivingNbors[i][j]);
 			}
 
 		}
@@ -134,51 +145,50 @@ public class WorldPanel extends JPanel implements MouseListener, ActionListener 
 
 		if (x > 0 && y > 0) {
 
-			if (cells[x - 1][y - 1].isAlive = true) {
+			if (cells[x - 1][y - 1].isAlive == true) {
 				livingNeighbors++;
 			}
 		}
 		if (y > 0) {
 
-			if (cells[x][y - 1].isAlive = true) {
+			if (cells[x][y - 1].isAlive == true) {
 				livingNeighbors++;
 			}
 		}
 		if (x > 0) {
 
-			if (cells[x - 1][y].isAlive = true) {
+			if (cells[x - 1][y].isAlive == true) {
 				livingNeighbors++;
 			}
 		}
-		if (y > 0 && x < ConwaysGameOfLife.WIDTH) {
-			if (cells[x + 1][y - 1].isAlive = true) {
+		if (y > 0 && x < cells.length - 1) {
+			if (cells[x + 1][y - 1].isAlive == true) {
 				livingNeighbors++;
 			}
 		}
-		if (x > 0 && y < ConwaysGameOfLife.HEIGHT) {
-			if (cells[x - 1][y + 1].isAlive = true) {
+		if (x > 0 && y < cells.length - 1) {
+			if (cells[x - 1][y + 1].isAlive == true) {
 				livingNeighbors++;
 			}
 		}
-		if(x < ConwaysGameOfLife.WIDTH && y < ConwaysGameOfLife.HEIGHT ) {
-		if (cells[x + 1][y + 1].isAlive = true) {
-			livingNeighbors++;
-		}
-		if(y < ConwaysGameOfLife.HEIGHT ) {
-		if (cells[x][y + 1].isAlive = true) {
-			livingNeighbors++;
-			} 
-		}
-		if(x < ConwaysGameOfLife.WIDTH) {
-		if (cells[x + 1][y].isAlive = true) {
-			livingNeighbors++;
-		}
+		if (x < cells.length - 1 && y <cells.length - 1) {
+			if (cells[x + 1][y + 1].isAlive == true) {
+				livingNeighbors++;
 			}
-		// add 1 to livingNeighbors for each
-		// neighboring cell that is alive
+			if (y < cells.length - 1) {
+				if (cells[x][y + 1].isAlive == true) {
+					livingNeighbors++;
+				}
+			}
+			if (x < cells.length - 1) {
+				if (cells[x + 1][y].isAlive == true) {
+					livingNeighbors++;
+				}
+			}
+			// add 1 to livingNeighbors for each
+			// neighboring cell that is alive
 
-
-	}
+		}
 		return livingNeighbors;
 	}
 
@@ -201,10 +211,10 @@ public class WorldPanel extends JPanel implements MouseListener, ActionListener 
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if (cells[e.getX()][e.getY()].isAlive) {
-			cells[e.getX()][e.getY()].isAlive = false;
+		if (cells[e.getX()/cellSize][e.getY()/cellSize].isAlive) {
+			cells[e.getX()/cellSize][e.getY()/cellSize].isAlive = false;
 		} else {
-			cells[e.getX()][e.getY()].isAlive = true;
+			cells[e.getX()/cellSize][e.getY()/cellSize].isAlive = true;
 		}
 
 		// get the location of the mouse
